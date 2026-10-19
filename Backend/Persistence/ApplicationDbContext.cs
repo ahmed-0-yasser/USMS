@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using USMS.API.Configurations;
-using USMS.API.Entities;
 using USMS.Entities;
+using USMS.Persistence.Configurations;
 
 namespace USMS.API.Persistence
 {
@@ -13,6 +13,7 @@ namespace USMS.API.Persistence
         }
 
         public DbSet<Notification> Notifications { get; set; }
+        public DbSet<ServiceRequest> ServiceRequests { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -20,6 +21,7 @@ namespace USMS.API.Persistence
 
             builder.ApplyConfiguration(new ApplicationUserConfiguration());
             builder.ApplyConfiguration(new NotificationConfiguration());
+            builder.ApplyConfiguration(new ServiceRequestConfiguration());
         }
     }
 }
