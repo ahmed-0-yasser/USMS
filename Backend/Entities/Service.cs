@@ -16,8 +16,7 @@
 
 
 
-        // Uncomment after Appointment entity is created
-        // public ICollection<Appointment> Appointments { get; set; } = new List<Appointment>();
+         public ICollection<Appointment> Appointments { get; set; } = new List<Appointment>();
 
 
 
