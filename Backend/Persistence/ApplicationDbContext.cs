@@ -14,6 +14,9 @@ namespace USMS.API.Persistence
 
         public DbSet<Notification> Notifications { get; set; }
 
+        public DbSet<Student> Students { get; set; }
+        public DbSet<Appointment> Appointments { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
