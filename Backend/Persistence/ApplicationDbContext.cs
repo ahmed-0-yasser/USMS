@@ -19,6 +19,9 @@ namespace USMS.API.Persistence
         public DbSet<Student> Students { get; set; }
         public DbSet<Appointment> Appointments { get; set; }
 
+        public DbSet<Service> Services { get; set; }
+        public DbSet<ServiceInformation> ServiceInformations { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -26,6 +29,9 @@ namespace USMS.API.Persistence
             builder.ApplyConfiguration(new ApplicationUserConfiguration());
             builder.ApplyConfiguration(new NotificationConfiguration());
             builder.ApplyConfiguration(new ServiceRequestConfiguration());
+            builder.ApplyConfiguration(new ServiceConfiguration());
+            builder.ApplyConfiguration(new ServiceInformationConfiguration());
+            
         }
     }
 }

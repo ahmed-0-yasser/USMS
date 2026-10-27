@@ -14,10 +14,8 @@ namespace USMS.Entities
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime? UpdatedAt { get; set; }
 
-        // Note: Uncomment after Student entity is created
-        // public Student Student { get; set; } = null!;
+        public Student Student { get; set; } = null!;
 
-        // Note: Uncomment after Department entity is created
-        // public Department ResponsibleDepartment { get; set; } = null!;
+        public Department ResponsibleDepartment { get; set; } = null!;
     }
 }
