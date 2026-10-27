@@ -11,20 +11,16 @@
         public bool SupportsAppointments { get; set; }
 
 
-        //Note:Uncomment after Department entity is created 
-        // public Department Department { get; set; } = null!;
         
          public Department Department { get; set; } = null!;
 
 
 
-        // Uncomment after Appointment entity is created
-        // public ICollection<Appointment> Appointments { get; set; } = new List<Appointment>();
+        public ICollection<AppointmentSlot> AppointmentSlots { get; set; } = new List<AppointmentSlot>();
 
 
 
-        //Uncomment after ServiceRequest entity is created
-        // public ICollection<ServiceRequest> ServiceRequests { get; set; } = new List<ServiceRequest>();
+        public ICollection<ServiceRequest> ServiceRequests { get; set; } = new List<ServiceRequest>();
 
 
 

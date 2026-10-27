@@ -15,10 +15,9 @@ namespace USMS.Entities
 
         public string Status { get; set; } = "Pending";
 
-        // Note: Uncomment after AppointmentSlot entity is created
-        // public AppointmentSlot AppointmentSlot { get; set; } = null!;
+        public AppointmentSlot AppointmentSlot { get; set; } = null!;
 
-        
+
         public Student Student { get; set; } = null!;
     }
 }

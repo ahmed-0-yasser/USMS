@@ -18,11 +18,9 @@ namespace USMS.Entities
         // Navigation Property: A student can submit many service requests
         public ICollection<ServiceRequest> ServiceRequests { get; set; } = new List<ServiceRequest>();
 
-        // Note: Uncomment after Complaint entity is created
-        // public ICollection<Complaint> Complaints { get; set; } = new List<Complaint>();
+        public ICollection<Complaint> Complaints { get; set; } = new List<Complaint>();
 
         // Navigation Property: Link Student to ApplicationUser
-        // Uncomment after the ApplicationUser relationship is configured
-        // public ApplicationUser User { get; set; } = null!;
+        public ApplicationUser User { get; set; } = null!;
     }
 }
