@@ -13,10 +13,13 @@
 
         //Note:Uncomment after Department entity is created 
         // public Department Department { get; set; } = null!;
+        
+         public Department Department { get; set; } = null!;
 
 
 
-         public ICollection<Appointment> Appointments { get; set; } = new List<Appointment>();
+        // Uncomment after Appointment entity is created
+        // public ICollection<Appointment> Appointments { get; set; } = new List<Appointment>();
 
 
 

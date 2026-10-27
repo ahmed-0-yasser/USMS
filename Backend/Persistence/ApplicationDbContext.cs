@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using USMS.API.Configurations;
+using USMS.API.Entities;
 using USMS.Entities;
 using USMS.Persistence.Configurations;
 
