@@ -1,7 +1,7 @@
-
 using System.Collections.Generic;
+using USMS.Core.Entities;
 
-namespace USMS.Entities
+namespace USMS.Core.Entities
 {
     public class Student
     {

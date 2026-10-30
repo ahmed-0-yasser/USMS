@@ -1,9 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using USMS.API.Entities;
-using USMS.Entities;
+using USMS.Core.Entities;
 
-namespace USMS.API.Configurations;
+namespace USMS.Infrastructure.Persistence.Configurations;
 
 public class ApplicationUserConfiguration : IEntityTypeConfiguration<ApplicationUser>
 {

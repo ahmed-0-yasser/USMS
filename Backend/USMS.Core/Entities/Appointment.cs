@@ -1,7 +1,7 @@
 ﻿
 using System;
 
-namespace USMS.Entities
+namespace USMS.Core.Entities
 {
     public class Appointment
     {

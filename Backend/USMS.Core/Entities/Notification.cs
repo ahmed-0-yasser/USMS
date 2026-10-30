@@ -1,9 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using USMS.Entities;
 
-namespace USMS.API.Entities
-{
+namespace USMS.Core.Entities;
     public class Notification
     {
         public int Id { get; set; }
@@ -22,4 +20,4 @@ namespace USMS.API.Entities
 
         public ApplicationUser User { get; set; } = null!;
     }
-}
+

@@ -3,3 +3,5 @@ bin/
 obj/
 *.user
 appsettings.Development.json
+# Temporary backup files
+*.tmp

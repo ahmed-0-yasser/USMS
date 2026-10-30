@@ -1,7 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
-using USMS.API.Entities;
-
-namespace USMS.Entities;
+using Microsoft.AspNetCore.Identity;
+namespace USMS.Core.Entities;
 
 public class ApplicationUser : IdentityUser
 {
@@ -9,3 +7,4 @@ public class ApplicationUser : IdentityUser
     public string AccountStatus { get; set; } = "Active"; 
     public ICollection<Notification> Notifications { get; set; } = new List<Notification>();
 }
+

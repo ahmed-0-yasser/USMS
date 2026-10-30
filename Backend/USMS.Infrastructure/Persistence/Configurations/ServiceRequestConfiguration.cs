@@ -1,9 +1,9 @@
-﻿
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using USMS.Entities;
+using USMS.Core.Entities;
 
-namespace USMS.Persistence.Configurations
+namespace USMS.Infrastructure.Persistence.Configurations
 {
     public class ServiceRequestConfiguration
         : IEntityTypeConfiguration<ServiceRequest>
@@ -38,3 +38,4 @@ namespace USMS.Persistence.Configurations
         }
     }
 }
+
