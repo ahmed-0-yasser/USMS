@@ -11,6 +11,16 @@ namespace USMS.Core.Entities
 
         public string? RejectionReason { get; set; }
 
+        public string? CertificateType { get; set; }
+
+        public string Purpose { get; set; } = string.Empty;
+
+        public string? AcademicYear { get; set; }
+
+        public string? Semester { get; set; }
+
+        public string? Notes { get; set; }
+
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         public DateTime? UpdatedAt { get; set; }
@@ -20,14 +30,14 @@ namespace USMS.Core.Entities
 
         public int ServiceId { get; set; }
 
-        public string? AssignedEmployeeId { get; set; }
+        public int? AssignedEmployeeId { get; set; }
 
         // Navigation Properties
         public Student Student { get; set; } = null!;
 
         public Service Service { get; set; } = null!;
 
-        public ApplicationUser? AssignedEmployee { get; set; }
+        public Employee? AssignedEmployee { get; set; }
     }
 }
 

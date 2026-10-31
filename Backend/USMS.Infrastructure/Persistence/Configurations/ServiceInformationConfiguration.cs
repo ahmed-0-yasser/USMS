@@ -8,6 +8,8 @@ public class ServiceInformationConfiguration : IEntityTypeConfiguration<ServiceI
 {
     public void Configure(EntityTypeBuilder<ServiceInformation> builder)
     {
+        builder.HasKey(si => si.Id);
+
         builder.Property(si => si.Description)
                .IsRequired()
                .HasMaxLength(2000);
