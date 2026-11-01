@@ -25,6 +25,9 @@ namespace USMS.API.Persistence
         public DbSet<Department> Departments { get; set; }
         public DbSet<Employee> Employees { get; set; }
 
+        public DbSet<Complaint> Complaints { get; set; }
+        public DbSet<AppointmentSlot> AppointmentSlots { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -42,6 +45,10 @@ namespace USMS.API.Persistence
 
             builder.ApplyConfiguration(new StudentConfiguration());
             builder.ApplyConfiguration(new AppointmentConfiguration());
+
+
+            builder.ApplyConfiguration(new ComplaintConfiguration());
+            builder.ApplyConfiguration(new AppointmentSlotConfiguration());
         }
     }
 }
