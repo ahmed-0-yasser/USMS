@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 18
+VisualStudioVersion = 18.10.12224.181 stable
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "USMS", "Backend\USMS.csproj", "{220B137F-B24A-22BA-0AC9-14C561B6B2A1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{220B137F-B24A-22BA-0AC9-14C561B6B2A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{220B137F-B24A-22BA-0AC9-14C561B6B2A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{220B137F-B24A-22BA-0AC9-14C561B6B2A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{220B137F-B24A-22BA-0AC9-14C561B6B2A1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E1075DF8-E4B1-45A0-9B89-002CF172A2EF}
+	EndGlobalSection
+EndGlobal
