@@ -17,8 +17,14 @@ namespace USMS.Infrastructure.Persistence
         public DbSet<Appointment> Appointments { get; set; }
         public DbSet<Service> Services { get; set; }
         public DbSet<ServiceInformation> ServiceInformations { get; set; }
-        public DbSet<Department> Departments { get; set; }
+
+        public DbSet<Department> Departments { get; set; }   
         public DbSet<Employee> Employees { get; set; }
+        public DbSet<Complaint> Complaints { get; set; }
+        public DbSet<AppointmentSlot> AppointmentSlots { get; set; }
+
+
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -29,8 +35,14 @@ namespace USMS.Infrastructure.Persistence
             builder.ApplyConfiguration(new ServiceRequestConfiguration());
             builder.ApplyConfiguration(new ServiceConfiguration());
             builder.ApplyConfiguration(new ServiceInformationConfiguration());
-            builder.ApplyConfiguration(new DepartmentConfiguration());
+            
+
+
+            builder.ApplyConfiguration(new DepartmentConfiguration());   
             builder.ApplyConfiguration(new EmployeeConfiguration());
+            builder.ApplyConfiguration(new ComplaintConfiguration());
+            builder.ApplyConfiguration(new AppointmentSlotConfiguration());
+
         }
     }
 }
