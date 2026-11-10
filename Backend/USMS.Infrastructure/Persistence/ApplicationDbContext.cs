@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using USMS.Core.Entities;
 using USMS.Infrastructure.Persistence.Configurations;
+using USMS.Persistence.Configurations;
 namespace USMS.Infrastructure.Persistence
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>

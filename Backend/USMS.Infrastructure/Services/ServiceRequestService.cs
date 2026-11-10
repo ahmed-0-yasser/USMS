@@ -4,8 +4,11 @@ using USMS.Core.Entities;
 using USMS.Infrastructure.Persistence;
 using USMS.Core.Interfaces;
 
+
+
 namespace USMS.Infrastructure.Services
 {
+ 
     public class ServiceRequestService : IServiceRequestService
     {
         private readonly ApplicationDbContext _context;
@@ -201,6 +204,27 @@ namespace USMS.Infrastructure.Services
             request.Status = "Cancelled";
             request.UpdatedAt = DateTime.UtcNow;
 
+
+            var studentUserId = await _context.Students
+              .Where(s => s.Id == studentId)
+              .Select(s => s.UserId)
+              .FirstOrDefaultAsync();
+
+            if (studentUserId != null)
+            {
+                var notification = new Notification
+                {
+                    Title = "Service Request Cancelled",
+                    Message = "Your service request has been cancelled successfully.",
+                    Type = "Service Request",
+                    UserId = studentUserId,
+                    IsRead = false,
+                    CreatedAt = DateTime.UtcNow
+                };
+
+                _context.Notifications.Add(notification);
+            }
+
             await _context.SaveChangesAsync();
 
             return true;
@@ -279,6 +303,16 @@ namespace USMS.Infrastructure.Services
                 return false;
             }
 
+            var studentUserId = await _context.Students
+                 .Where(s => s.Id == request.StudentId)
+                 .Select(s => s.UserId)
+                 .FirstOrDefaultAsync();
+
+            if (studentUserId == null)
+            {
+                return false;
+            }
+
             // Update request
             request.Status = newStatus;
 
@@ -288,6 +322,16 @@ namespace USMS.Infrastructure.Services
 
             request.AssignedEmployeeId = employeeId;
             request.UpdatedAt = DateTime.UtcNow;
+
+            _context.Notifications.Add(new Notification
+            {
+                UserId = studentUserId,
+                Title = "Service Request Updated",
+                Message = $"Your service request '{request.RequestType}' status is now: {newStatus}.",
+                Type = "Service Request",
+                IsRead = false,
+                CreatedAt = DateTime.UtcNow
+            });
 
             await _context.SaveChangesAsync();
 
