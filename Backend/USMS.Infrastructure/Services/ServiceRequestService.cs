@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿
+using Microsoft.EntityFrameworkCore;
 using USMS.Core.DTOs.ServiceRequests;
 using USMS.Core.Entities;
 using USMS.Infrastructure.Persistence;
@@ -6,16 +7,33 @@ using USMS.Core.Interfaces;
 
 namespace USMS.Infrastructure.Services
 {
+    /// <summary>
+    /// Provides the business logic for managing student service requests,
+    /// including creation, retrieval, cancellation, and status updates.
+    /// </summary>
     public class ServiceRequestService : IServiceRequestService
     {
         private readonly ApplicationDbContext _context;
 
+        /// <summary>
+        /// Initializes a new instance of the ServiceRequestService class.
+        /// </summary>
+        /// <param name="context">The application database context.</param>
         public ServiceRequestService(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        public async Task<ServiceRequestDetailsDto> CreateRequestAsync(CreateServiceRequestDto dto, int studentId)
+        /// <summary>
+        /// Creates a new service request after validating the request type,
+        /// required fields, student, and selected service.
+        /// </summary>
+        /// <param name="dto">The data required to create the service request.</param>
+        /// <param name="studentId">The ID of the student submitting the request.</param>
+        /// <returns>The details of the newly created service request.</returns>
+        public async Task<ServiceRequestDetailsDto> CreateRequestAsync(
+            CreateServiceRequestDto dto,
+            int studentId)
         {
             // 1. Validate request type
             string requestType = dto.RequestType.Trim();
@@ -132,8 +150,14 @@ namespace USMS.Infrastructure.Services
             };
         }
 
-
-        public async Task<IEnumerable<ServiceRequestResponseDto>> GetMyRequestsAsync(int studentId)
+        /// <summary>
+        /// Retrieves all service requests submitted by a specific student,
+        /// ordered from newest to oldest.
+        /// </summary>
+        /// <param name="studentId">The ID of the student.</param>
+        /// <returns>A collection of the student's service request summaries.</returns>
+        public async Task<IEnumerable<ServiceRequestResponseDto>>
+            GetMyRequestsAsync(int studentId)
         {
             var requests = await _context.ServiceRequests
                 .Where(sr => sr.StudentId == studentId)
@@ -152,11 +176,22 @@ namespace USMS.Infrastructure.Services
             return requests;
         }
 
-
-        public async Task<ServiceRequestDetailsDto?> GetRequestDetailsAsync(int requestId, int studentId)
+        /// <summary>
+        /// Retrieves the details of a specific service request
+        /// only if it belongs to the specified student.
+        /// </summary>
+        /// <param name="requestId">The ID of the service request.</param>
+        /// <param name="studentId">The ID of the student requesting the details.</param>
+        /// <returns>
+        /// The service request details if found; otherwise, null.
+        /// </returns>
+        public async Task<ServiceRequestDetailsDto?>
+            GetRequestDetailsAsync(int requestId, int studentId)
         {
             var request = await _context.ServiceRequests
-                .Where(sr => sr.Id == requestId && sr.StudentId == studentId)
+                .Where(sr =>
+                    sr.Id == requestId &&
+                    sr.StudentId == studentId)
                 .Select(sr => new ServiceRequestDetailsDto
                 {
                     Id = sr.Id,
@@ -180,8 +215,17 @@ namespace USMS.Infrastructure.Services
             return request;
         }
 
-
-        public async Task<bool> CancelRequestAsync(int requestId, int studentId)
+        /// <summary>
+        /// Cancels a service request if it belongs to the specified student
+        /// and its current status is Submitted.
+        /// </summary>
+        /// <param name="requestId">The ID of the service request to cancel.</param>
+        /// <param name="studentId">The ID of the student requesting cancellation.</param>
+        /// <returns>
+        /// True if the request was successfully cancelled; otherwise, false.
+        /// </returns>
+        public async Task<bool> CancelRequestAsync(
+            int requestId, int studentId)
         {
             var request = await _context.ServiceRequests
                 .FirstOrDefaultAsync(sr =>
@@ -193,7 +237,10 @@ namespace USMS.Infrastructure.Services
                 return false;
             }
 
-            if (request.Status != "Submitted")
+            if (!string.Equals(
+                request.Status,
+                "Submitted",
+                StringComparison.OrdinalIgnoreCase))
             {
                 return false;
             }
@@ -206,8 +253,14 @@ namespace USMS.Infrastructure.Services
             return true;
         }
 
-
-        public async Task<IEnumerable<ServiceRequestResponseDto>> GetDepartmentRequestsAsync(int departmentId)
+        /// <summary>
+        /// Retrieves all service requests associated with services
+        /// belonging to a specific department.
+        /// </summary>
+        /// <param name="departmentId">The ID of the department.</param>
+        /// <returns>A collection of service request summaries for the department.</returns>
+        public async Task<IEnumerable<ServiceRequestResponseDto>>
+            GetDepartmentRequestsAsync(int departmentId)
         {
             var requests = await _context.ServiceRequests
                 .Where(sr => sr.Service.DepartmentId == departmentId)
@@ -226,8 +279,22 @@ namespace USMS.Infrastructure.Services
             return requests;
         }
 
-
-        public async Task<bool> UpdateRequestStatusAsync(int requestId, int employeeId, int departmentId, UpdateServiceRequestStatusDto dto)
+        /// <summary>
+        /// Updates a service request's status after validating the allowed
+        /// status transition, rejection reason, and employee department.
+        /// </summary>
+        /// <param name="requestId">The ID of the service request.</param>
+        /// <param name="employeeId">The ID of the employee updating the request.</param>
+        /// <param name="departmentId">The ID of the employee's department.</param>
+        /// <param name="dto">The new status and optional rejection reason.</param>
+        /// <returns>
+        /// True if the status was successfully updated; otherwise, false.
+        /// </returns>
+        public async Task<bool> UpdateRequestStatusAsync(
+            int requestId,
+            int employeeId,
+            int departmentId,
+            UpdateServiceRequestStatusDto dto)
         {
             var request = await _context.ServiceRequests
                 .Include(sr => sr.Service)
@@ -245,30 +312,61 @@ namespace USMS.Infrastructure.Services
                 return false;
             }
 
-            // Validate the new status
-            string newStatus = dto.Status.Trim();
+            // 1. Validate and normalize the new status
+            string newStatus = dto.Status.Trim().ToLowerInvariant() switch
+            {
+                "under review" => "Under Review",
+                "approved" => "Approved",
+                "rejected" => "Rejected",
+                "ready" => "Ready",
+                "completed" => "Completed",
+                _ => string.Empty
+            };
 
-            // Check allowed status transitions
+            if (string.IsNullOrEmpty(newStatus))
+            {
+                return false;
+            }
+
+            // 2. Check allowed status transitions
             bool isValidTransition =
-                (request.Status == "Submitted" && newStatus == "Under Review") ||
-                (request.Status == "Under Review" &&
-                    (newStatus == "Approved" || newStatus == "Rejected")) ||
-                (request.Status == "Approved" && newStatus == "Ready") ||
-                (request.Status == "Ready" && newStatus == "Completed");
+                (string.Equals(
+                    request.Status,
+                    "Submitted",
+                    StringComparison.OrdinalIgnoreCase) &&
+                 newStatus == "Under Review") ||
+
+                (string.Equals(
+                    request.Status,
+                    "Under Review",
+                    StringComparison.OrdinalIgnoreCase) &&
+                 (newStatus == "Approved" || newStatus == "Rejected")) ||
+
+                (string.Equals(
+                    request.Status,
+                    "Approved",
+                    StringComparison.OrdinalIgnoreCase) &&
+                 newStatus == "Ready") ||
+
+                (string.Equals(
+                    request.Status,
+                    "Ready",
+                    StringComparison.OrdinalIgnoreCase) &&
+                 newStatus == "Completed");
 
             if (!isValidTransition)
             {
                 return false;
             }
 
-            // Validate rejection reason
+            // 3. Validate rejection reason
             if (newStatus == "Rejected" &&
                 string.IsNullOrWhiteSpace(dto.RejectionReason))
             {
                 return false;
             }
 
-            // Check employee
+            // 4. Check employee
             var employee = await _context.Employees
                 .FirstOrDefaultAsync(e =>
                     e.Id == employeeId &&
@@ -279,7 +377,7 @@ namespace USMS.Infrastructure.Services
                 return false;
             }
 
-            // Update request
+            // 5. Update request
             request.Status = newStatus;
 
             request.RejectionReason = newStatus == "Rejected"
@@ -293,6 +391,5 @@ namespace USMS.Infrastructure.Services
 
             return true;
         }
-
     }
 }

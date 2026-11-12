@@ -5,9 +5,16 @@ using USMS.Core.Entities;
 
 namespace USMS.Infrastructure.Persistence.Configurations
 {
+    /// <summary>
+    /// Configures the database mapping and relationships for the ServiceRequest entity.
+    /// </summary>
     public class ServiceRequestConfiguration
         : IEntityTypeConfiguration<ServiceRequest>
     {
+        /// <summary>
+        /// Configures the properties, constraints, and relationships of the ServiceRequest entity.
+        /// </summary>
+        /// <param name="builder">The builder used to configure the ServiceRequest entity.</param>
         public void Configure(EntityTypeBuilder<ServiceRequest> builder)
         {
             // Primary Key
